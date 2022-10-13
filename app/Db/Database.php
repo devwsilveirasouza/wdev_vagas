@@ -66,8 +66,8 @@ class Database  {
     }
     /**
      * Método responsável por executar queries dentro do banco de dados
-     * @param string
-     * @param array
+     * @param string $query
+     * @param array $params
      * @return PDOStatement
      */
     public function execute($query, $params = [])
@@ -82,9 +82,9 @@ class Database  {
     }
 
     /**
-     * Método responsável por fazer a inserção dos dados no banco
+     * Método responsável por inserir dados no banco
      * @param array field => value
-     * @return integer
+     * @return integer ID inserido
      */
     public function insert($values)
     {
@@ -110,6 +110,7 @@ class Database  {
      * @param string $where
      * @param string $order
      * @param string $limit
+     * @param string $fields
      * @return PDOStatement
      */
     public function select($where = null, $order = null, $limit = null, $fields = '*')
@@ -117,14 +118,50 @@ class Database  {
         // DADOS DA QUERY
         // Verificação ternária
         // Se tiver valor recebe ******* senão recebe vazia
-        $where = !empty($where) ? 'WHERE '.$where : ''; // strlen obsoleta em PHP8
-        $order = !empty($order) ? 'ORDER BY '.$order : ''; // strlen obsoleta em PHP8
-        $limit = !empty($limit) ? 'LIMIT '.$limit : ''; // strlen obsoleta em PHP8
+        $where = strlen($where) ? 'WHERE '.$where : ''; // strlen obsoleta em PHP8
+        $order = strlen($order) ? 'ORDER BY '.$order : ''; // strlen obsoleta em PHP8
+        $limit = strlen($limit) ? 'LIMIT '.$limit : ''; // strlen obsoleta em PHP8
         // MONTA A QUERY
         $query = 'SELECT '.$fields.' FROM '.$this->table.' '.$where.' '.$order.' '.$limit;
 
-        // EXECUTE O QUERY
+        // EXECUTA O QUERY
         return $this->execute($query);
     }
+
+    /**
+   * Método responsável por executar atualizações no banco de dados
+   * @param  string $where
+   * @param  array $values [ field => value ]
+   * @return boolean
+   */
+  public function update($where,$values){
+    //DADOS DA QUERY
+    $fields = array_keys($values);
+
+    //MONTA A QUERY
+    $query = 'UPDATE '.$this->table.' SET '.implode('=?,',$fields).'=? WHERE '.$where;
+
+    //EXECUTAR A QUERY
+    $this->execute($query,array_values($values));
+
+    //RETORNA SUCESSO
+    return true;
+  }
+
+  /**
+   * Método responsável por excluir dados do banco
+   * @param  string $where
+   * @return boolean
+   */
+  public function delete($where){
+    //MONTA A QUERY
+    $query = 'DELETE FROM '.$this->table.' WHERE '.$where;
+
+    //EXECUTA A QUERY
+    $this->execute($query);
+
+    //RETORNA SUCESSO
+    return true;
+  }
 
 }

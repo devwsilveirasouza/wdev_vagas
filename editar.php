@@ -3,13 +3,10 @@
 require __DIR__ .'/vendor/autoload.php';
 // Definindo a constante do titulo da pagina
 define('TITLE', 'Editar vaga');
-
 // Chamando a classe
 use \App\Entity\Vaga;
-
 // Debugando o código
 // echo "<pre>"; print_r($_POST); echo "<pre>"; exit;
-
 // VALIDAÇÃO DO ID
 if(!isset($_GET['id']) or !is_numeric($_GET['id'])){
     header('location: index.php?status=error');
@@ -31,8 +28,8 @@ if(isset($_POST['titulo'], $_POST['descricao'], $_POST['ativo'])){
     $obVaga->titulo     = $_POST['titulo'];
     $obVaga->descricao  = $_POST['descricao'];
     $obVaga->ativo      = $_POST['ativo'];
-    echo "<pre>"; print_r($obVaga); echo "</pre>"; exit;
-    // $obVaga->cadastrar();
+    // echo "<pre>"; print_r($obVaga); echo "</pre>"; exit;
+    $obVaga->atualizar();
 
     header('location: index.php?status=success');
     exit;

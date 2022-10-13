@@ -6,13 +6,14 @@ define('TITLE', 'Cadastrar vaga');
 
 // Chamando a classe
 use \App\Entity\Vaga;
+$obVaga = new Vaga; // Criando instância da classe
 
 // Debugando o código
 // echo "<pre>"; print_r($_POST); echo "<pre>"; exit;
 
 // VALIDAÇÃO DO POST
 if(isset($_POST['titulo'], $_POST['descricao'], $_POST['ativo'])){
-    $obVaga = new Vaga; // Criando instância da classe
+    
     $obVaga->titulo     = $_POST['titulo'];
     $obVaga->descricao  = $_POST['descricao'];
     $obVaga->ativo      = $_POST['ativo'];
